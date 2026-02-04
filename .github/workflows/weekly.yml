@@ -1,0 +1,40 @@
+name: AI Modernization Engine - Weekly Draft
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 14 * * 1"   # Mon 14:00 UTC = 9:00am ET
+
+jobs:
+  weekly_draft_builder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Validate Notion DB access
+        run: python validate_notion.py
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_RESEARCH_DB_ID: ${{ secrets.NOTION_RESEARCH_DB_ID }}
+
+      - name: Build weekly LinkedIn draft package
+        run: python build_weekly_draft.py
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_RESEARCH_DB_ID: ${{ secrets.NOTION_RESEARCH_DB_ID }}
+          NOTION_QUEUE_DB_ID: ${{ secrets.NOTION_QUEUE_DB_ID }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: gpt-4o-mini
+          MAX_INPUT_TOKENS: "9000"
+          MAX_OUTPUT_TOKENS: "3200"
+          LOOKBACK_DAYS: "14"
+          MAX_SOURCES: "8"
