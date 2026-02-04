@@ -8,22 +8,62 @@ ENABLE_KEYWORD_FILTER = True
 
 # Keyword set tuned to Operational Modernization + AI Transformation
 KEYWORDS = [
+    # Operating model / governance
     "operating model",
-    "operational modernization",
-    "modernization",
-    "transformation",
-    "ai transformation",
-    "portfolio",
-    "portfolio governance",
     "governance",
-    "execution systems",
-    "workflow",
-    "automation",
-    "agentic",
-    "platform engineering",
-    "coordination debt",
+    "portfolio governance",
+    "decision rights",
     "decision velocity",
-    "signal",
+    "prioritization",
+    "capital allocation",
+    "resource allocation",
+    "organizational design",
+    "coordination debt",
+
+    # Program / TPM elevation
+    "program management",
+    "technical program management",
+    "portfolio management",
+    "roadmap alignment",
+    "cross-functional",
+    "execution systems",
+    "delivery system",
+    "dependency management",
+
+    # AI transformation
+    "AI transformation",
+    "AI strategy",
+    "agentic",
+    "automation",
+    "workflow automation",
+    "intelligent systems",
+    "augmented decision-making",
+    "AI operating model",
+
+    # Platform modernization
+    "platform engineering",
+    "internal developer platform",
+    "modernization",
+    "cloud architecture",
+    "reliability engineering",
+    "observability",
+    "platform governance",
+
+    # Metrics / signals
+    "metrics",
+    "measurement",
+    "leading indicators",
+    "lagging indicators",
+    "performance systems",
+    "risk management",
+    "feedback loops",
+
+    # Change / transformation
+    "change management",
+    "transformation",
+    "organizational transformation",
+    "enterprise agility",
+    "value stream",
 ]
 
 # Dedupe DB path
