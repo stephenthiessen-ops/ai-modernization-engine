@@ -295,6 +295,9 @@ def append_section(page_id: str, heading: str, body: str) -> None:
             "type": "heading_2",
             "heading_2": {"rich_text": [{"type": "text", "text": {"content": heading}}]},
         }
+      resp = notion.blocks.children.append(block_id=page_id, children=children)
+print(f"[NOTION] Appended section '{heading}' with {len(children)} blocks")
+return resp
     ]
 
     for chunk in _chunk_text(body):
