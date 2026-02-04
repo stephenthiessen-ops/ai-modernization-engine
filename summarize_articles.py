@@ -4,7 +4,7 @@ from typing import List, Dict, Any
 from openai import OpenAI
 import tiktoken
 
-from notion_client import query_unprocessed_research, update_research_page, get_prop_text, get_prop_url, get_prop_select
+from notion_api import query_unprocessed_research, update_research_page, get_prop_text, get_prop_url, get_prop_select
 from extractor import fetch_html, extract_text_blocks, build_excerpt
 from relevance import score_relevance
 from config import KEYWORDS
