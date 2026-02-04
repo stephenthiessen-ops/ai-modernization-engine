@@ -1,7 +1,7 @@
 import feedparser
 from rss_sources import RSS_FEEDS
 from config import RECENCY_DAYS, ENABLE_KEYWORD_FILTER, KEYWORDS, DEDUPE_DB_PATH, MAX_MATCH_TEXT_CHARS
-from notion_client import create_research_entry
+from notion_api import create_research_entry
 from utils import init_dedupe_db, already_seen, mark_seen, parse_published, is_within_days, safe_text
 
 def matches_keywords(title: str, summary: str) -> bool:
