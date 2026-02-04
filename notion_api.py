@@ -211,17 +211,37 @@ def create_content_queue_page(title: str, week_of_iso: str, topic: str, status: 
     return page["id"]
 
 
-def set_content_queue_properties(page_id: str, thesis_angle: str) -> None:
+def set_content_queue_properties(
+    page_id: str,
+    thesis_angle: str,
+    long_form_draft: str = "",
+    companion_posts: str = "",
+    comment_prompts: str = "",
+    sources: str = "",
+) -> None:
     """
-    Sets lightweight properties. (Long sections are appended as blocks.)
+    Sets table-visible properties (snippets). Full content should still go in blocks.
+    NOTE: These properties must exist in your Content Queue database with exact names:
+      - Thesis Angle (rich_text)
+      - Long-form Draft (rich_text)
+      - Companion Posts (rich_text)
+      - Comment Prompts (rich_text)
+      - Sources (rich_text)
     """
-    notion.pages.update(
-        page_id=page_id,
-        properties={
-            "Thesis Angle": {"rich_text": [{"text": {"content": (thesis_angle or "")[:2000]}}]},
-        },
-    )
+    props = {
+        "Thesis Angle": {"rich_text": [{"text": {"content": (thesis_angle or "")[:2000]}}]},
+    }
 
+    if long_form_draft:
+        props["Long-form Draft"] = {"rich_text": [{"text": {"content": long_form_draft[:2000]}}]}
+    if companion_posts:
+        props["Companion Posts"] = {"rich_text": [{"text": {"content": companion_posts[:2000]}}]}
+    if comment_prompts:
+        props["Comment Prompts"] = {"rich_text": [{"text": {"content": comment_prompts[:2000]}}]}
+    if sources:
+        props["Sources"] = {"rich_text": [{"text": {"content": sources[:2000]}}]}
+
+    notion.pages.update(page_id=page_id, properties=props)
 
 # -----------------------
 # Block append utilities
