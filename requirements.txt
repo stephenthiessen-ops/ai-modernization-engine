@@ -1,0 +1,4 @@
+feedparser==6.0.11
+notion-client==2.2.1
+python-dateutil==2.9.0.post0
+requests==2.32.3
