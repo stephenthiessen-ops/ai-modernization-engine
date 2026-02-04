@@ -1,3 +1,33 @@
+name: AI Modernization Engine
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 13 * * 2"   # Tue 13:00 UTC
+    - cron: "0 13 * * 5"   # Fri 13:00 UTC
+
+jobs:
+  ingest_and_summarize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run RSS ingest
+        run: python ingest_sources.py
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_RESEARCH_DB_ID: ${{ secrets.NOTION_RESEARCH_DB_ID }}
+          NOTION_QUEUE_DB_ID: ${{ secrets.NOTION_QUEUE_DB_ID }}
+
       - name: Run summarization + scoring
         run: python summarize_articles.py
         env:
@@ -6,5 +36,6 @@
           NOTION_QUEUE_DB_ID: ${{ secrets.NOTION_QUEUE_DB_ID }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_MODEL: gpt-4o-mini
-          MAX_INPUT_TOKENS: "2500"
-          MAX_OUTPUT_TOKENS: "350"
+          MAX_INPUT_TOKENS: "1500"
+          MAX_OUTPUT_TOKENS: "200"
+   
