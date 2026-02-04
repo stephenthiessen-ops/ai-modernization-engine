@@ -9,6 +9,7 @@ on:
 jobs:
   ingest_and_summarize:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,6 +22,14 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      # Validate we can SEE the Research Library database with this token + DB ID
+      - name: Validate Notion DB access
+        run: python validate_notion.py
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_RESEARCH_DB_ID: ${{ secrets.NOTION_RESEARCH_DB_ID }}
+
+      # Ingest RSS candidates into Research Library
       - name: Run RSS ingest
         run: python ingest_sources.py
         env:
@@ -28,6 +37,7 @@ jobs:
           NOTION_RESEARCH_DB_ID: ${{ secrets.NOTION_RESEARCH_DB_ID }}
           NOTION_QUEUE_DB_ID: ${{ secrets.NOTION_QUEUE_DB_ID }}
 
+      # Summarize + score unprocessed Research Library rows
       - name: Run summarization + scoring
         run: python summarize_articles.py
         env:
@@ -38,4 +48,3 @@ jobs:
           OPENAI_MODEL: gpt-4o-mini
           MAX_INPUT_TOKENS: "1500"
           MAX_OUTPUT_TOKENS: "200"
-   
