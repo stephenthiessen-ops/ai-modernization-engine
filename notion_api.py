@@ -246,11 +246,8 @@ def set_content_queue_properties(
 # -----------------------
 # Block append utilities
 # -----------------------
+
 def _chunk_text(text: str, max_len: int = 1800) -> List[str]:
-    """
-    Notion has practical limits for rich_text payload sizes per block.
-    Chunk by paragraph, then hard-split if needed.
-    """
     if not text:
         return [""]
 
@@ -259,14 +256,13 @@ def _chunk_text(text: str, max_len: int = 1800) -> List[str]:
     cur = ""
 
     for p in paras:
-        # If the paragraph itself is massive, split it
         if len(p) > max_len:
             if cur:
                 chunks.append(cur)
                 cur = ""
             start = 0
             while start < len(p):
-                chunks.append(p[start : start + max_len])
+                chunks.append(p[start:start + max_len])
                 start += max_len
             continue
 
@@ -284,17 +280,14 @@ def _chunk_text(text: str, max_len: int = 1800) -> List[str]:
 
 
 def append_section(page_id: str, heading: str, body: str) -> None:
-    """
-    Appends:
-    - Heading (H2)
-    - Paragraph blocks (chunked)
-    """
     children: List[Dict[str, Any]] = [
         {
             "object": "block",
             "type": "heading_2",
             "heading_2": {
-                "rich_text": [{"type": "text", "text": {"content": heading}}]
+                "rich_text": [
+                    {"type": "text", "text": {"content": heading}}
+                ]
             },
         }
     ]
@@ -305,24 +298,16 @@ def append_section(page_id: str, heading: str, body: str) -> None:
                 "object": "block",
                 "type": "paragraph",
                 "paragraph": {
-                    "rich_text": [{"type": "text", "text": {"content": chunk}}]
+                    "rich_text": [
+                        {"type": "text", "text": {"content": chunk}}
+                    ]
                 },
             }
         )
 
-    notion.blocks.children.append(block_id=page_id, children=children)
+    notion.blocks.children.append(
+        block_id=page_id,
+        children=children,
+    )
+
     print(f"[NOTION] Appended section '{heading}' with {len(children)} blocks")
-
-return resp
-    ]
-
-    for chunk in _chunk_text(body):
-        children.append(
-            {
-                "object": "block",
-                "type": "paragraph",
-                "paragraph": {"rich_text": [{"type": "text", "text": {"content": chunk}}]},
-            }
-        )
-
-    notion.blocks.children.append(block_id=page_id, children=children)
