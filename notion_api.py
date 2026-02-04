@@ -239,7 +239,7 @@ def set_content_queue_properties(
     if comment_prompts:
         props["Comment Prompts"] = {"rich_text": [{"text": {"content": comment_prompts[:2000]}}]}
     if sources:
-        props["Sources"] = {"rich_text": [{"text": {"content": sources[:2000]}}]}
+        props["Sources"] = {"rich_text": [{"text": {"content": sources[:2000]}}] }
 
     notion.pages.update(page_id=page_id, properties=props)
 
@@ -293,10 +293,26 @@ def append_section(page_id: str, heading: str, body: str) -> None:
         {
             "object": "block",
             "type": "heading_2",
-            "heading_2": {"rich_text": [{"type": "text", "text": {"content": heading}}]},
+            "heading_2": {
+                "rich_text": [{"type": "text", "text": {"content": heading}}]
+            },
         }
-      resp = notion.blocks.children.append(block_id=page_id, children=children)
-print(f"[NOTION] Appended section '{heading}' with {len(children)} blocks")
+    ]
+
+    for chunk in _chunk_text(body):
+        children.append(
+            {
+                "object": "block",
+                "type": "paragraph",
+                "paragraph": {
+                    "rich_text": [{"type": "text", "text": {"content": chunk}}]
+                },
+            }
+        )
+
+    notion.blocks.children.append(block_id=page_id, children=children)
+    print(f"[NOTION] Appended section '{heading}' with {len(children)} blocks")
+
 return resp
     ]
 
