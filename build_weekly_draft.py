@@ -297,7 +297,14 @@ def main() -> None:
         status="Draft",
     )
 
-    set_content_queue_properties(page_id=page_id, thesis_angle=thesis_angle)
+    set_content_queue_properties(
+    page_id=page_id,
+    thesis_angle=thesis_angle,
+    long_form_draft=long_form,
+    companion_posts=companion_posts,
+    comment_prompts=comment_prompts,
+    sources=sources_text,
+)
 
     append_section(page_id, "Weekly Topic", topic["name"])
     append_section(page_id, "Thesis Angle", thesis_angle)
